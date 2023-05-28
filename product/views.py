@@ -1,46 +1,66 @@
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
-from .models import Category, Product, Review
-from .serializers import CategorySerializer, ProductSerializer, ReviewSerializer
+from rest_framework import status
+from product.models import Category, Product, Review
+from product.serializers import CategorySerializer, ProductSerializer, ReviewSerializer, ProductsReviewsSerializer
 
 
 @api_view(['GET'])
-def category_list(request):
+def category_api_view(request):
     categories = Category.objects.all()
-    data = CategorySerializer(categories, many=True)
-    return Response(data.data)
+    serializer = CategorySerializer(categories, many=True)
+    return Response(data=serializer.data)
 
 
 @api_view(['GET'])
-def category_detail(request, **kwargs):
-    category = Category.objects.get(id=kwargs['id'])
-    data = CategorySerializer(category, many=False).data
-    return Response(data=data)
+def category_detail_api_view(request, id):
+    try:
+        category = Category.objects.get(id=id)
+    except Category.DoesNotExist:
+        return Response(status=status.HTTP_404_NOT_FOUND,
+                        data="ERROR! Такой страницы не существует")
+    serializer = CategorySerializer(category)
+    return Response(data=serializer.data)
 
 
 @api_view(['GET'])
-def product_list(request):
+def products_api_view(request):
     products = Product.objects.all()
-    data = ProductSerializer(products, many=True)
-    return Response(data.data)
+    serializer = ProductSerializer(products, many=True)
+    return Response(data=serializer.data)
 
 
 @api_view(['GET'])
-def product_detail(request, **kwargs):
-    product = Product.objects.get(id=kwargs['id'])
-    data = ProductSerializer(product, many=False).data
-    return Response(data=data)
+def product_detail_api_view(request, id):
+    try:
+        product = Product.objects.get(id=id)
+    except Product.DoesNotExist:
+        return Response(status=status.HTTP_404_NOT_FOUND,
+                        data="ERROR! Такой страницы не существует")
+    serializer = ProductSerializer(product)
+    return Response(data=serializer.data)
 
 
 @api_view(['GET'])
-def review_list(request):
+def reviews_api_view(request):
     reviews = Review.objects.all()
-    data = ReviewSerializer(reviews, many=True)
-    return Response(data.data)
+    serializer = ReviewSerializer(reviews, many=True)
+    return Response(data=serializer.data)
 
 
 @api_view(['GET'])
-def review_detail(request, **kwargs):
-    review = Review.objects.get(id=kwargs['id'])
-    data = ReviewSerializer(review, many=False).data
-    return Response(data=data)
+def review_detail_api_view(request, id):
+    try:
+        review = Review.objects.get(id=id)
+    except Review.DoesNotExist:
+        return Response(status=status.HTTP_404_NOT_FOUND,
+                        data="ERROR! Такой страницы не существует")
+    serializer = ReviewSerializer(review)
+    return Response(data=serializer.data)
+
+
+@api_view(['GET'])
+def products_reviews_api_view(request):
+    products = Product.objects.all()
+    serializer = ProductsReviewsSerializer(products, many=True)
+    return Response(data=serializer.data)
