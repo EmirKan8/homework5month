@@ -20,7 +20,7 @@ class CategorySerializer(serializers.ModelSerializer):
 class ReviewSerializer(serializers.ModelSerializer):
     class Meta:
         model = Review
-        fields = 'text stars'.split()
+        fields = 'text product stars'.split()
         # fields = '__all__'
 
 
