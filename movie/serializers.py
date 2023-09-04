@@ -11,11 +11,11 @@ class MovieSerializer(serializers.ModelSerializer):
 
 
 class DirectorSerializer(serializers.ModelSerializer):
-    product_count = MovieSerializer
+    movie_count = MovieSerializer(read_only=True, many=1)
 
     class Meta:
         model = Director
-        fields = 'name product_count'.split()
+        fields = 'name movie_count'.split()
         # fields = '__all__'
 
 
